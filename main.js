@@ -1,4 +1,5 @@
 const readline = require('readline');
+const { number } = require('yargs');
 const data = require('./data.js');
 
 
@@ -21,53 +22,73 @@ Your options are:
 
 `;
 
-const add = function(userInput) {
+const displayTodos = () => {
+  console.log('Your todos are:')
+for (i = 0; i < todos.length; i++) {
+  console.log(i + 1 + '-' + todos[i].text);
+}
+}
+displayTodos();
+
+
+const add = (userInput) => {
   const todo = {
     text: userInput,
     isComplete: false,
     priority: 2,
   }
-
   todos.unshift(todo);
   console.clear();
-  console.log('Your todos are:')
-  for (const todo of todos) {
-    console.log('* ' + todo.text);
-  }
-
+  displayTodos();
   interface.question(menu, handleMenu);
 }
 
-const handleMenu = function(cmd) {
-  if (cmd === '1') {
+const removeTodo = (num) => {
+  // if(num = todos[i].text)
+todos.splice(num - 1,1)
+  displayTodos();
+  interface.question(menu, handleMenu)
+}
+
+const handleMenu = (cmd) => {
+  switch (cmd) {
+    case '1':
     console.clear();
     interface.question('What todo would you like to add?\n\n', add);
-  } else if (cmd === '2') {
+    break;
+
+    case '2':
+    console.clear();
+    displayTodos(); 
+    interface.question('Which todo would you like to remove?\n\n', removeTodo);
+    break;
+
+    case '3': 
     console.clear();
     console.log(`Feature ${cmd} is still under construction. Sorry!`);
     interface.question(menu, handleMenu);
-  } else if (cmd === '3') {
+    break;
+
+    case '4': 
     console.clear();
     console.log(`Feature ${cmd} is still under construction. Sorry!`);
     interface.question(menu, handleMenu);
-  } else if (cmd === '4') {
+    break;
+
+    case '5':
     console.clear();
     console.log(`Feature ${cmd} is still under construction. Sorry!`);
     interface.question(menu, handleMenu);
-  } else if (cmd === '5') {
-    console.clear();
-    console.log(`Feature ${cmd} is still under construction. Sorry!`);
-    interface.question(menu, handleMenu);
-  } else {
+    break;
+
+    default:
     console.log('Quitting!');
     interface.close();
   }
 };
 
 console.clear();
-console.log('Your todos are:')
-for (const todo of todos) {
-  console.log('* ' + todo.text);
-}
+
+displayTodos();
 
 interface.question(menu, handleMenu);
